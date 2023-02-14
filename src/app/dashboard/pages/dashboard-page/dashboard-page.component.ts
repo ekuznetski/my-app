@@ -37,14 +37,13 @@ export class DashboardPageComponent {
         console.log('itemChangeCallback', item, itemComponent);
         this.store.dispatch(new MovePane(item as DashboardWidget));
       },
-      // itemResizeCallback: (item, itemComponent) => {
-      //   console.log('itemResizeCallback', item, itemComponent);
-      //   this.store.dispatch(new ResizePane(item as DashboardWidget));
-      // },
+      itemResizeCallback: (item, itemComponent) => {
+        console.log('itemResizeCallback', item, itemComponent);
+        this.store.dispatch(new ResizePane(item as DashboardWidget));
+      },
       margin: 2,
       minCols: 8,
       minRows: 8
     };
   }
-
 }

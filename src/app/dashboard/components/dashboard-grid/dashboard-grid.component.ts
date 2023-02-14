@@ -11,28 +11,17 @@ import {RemovePane} from '@app/dashboard/+state/dashboard.actions';
   templateUrl: './dashboard-grid.component.html',
   styleUrls: ['./dashboard-grid.component.css']
 })
-export class DashboardGridComponent implements OnInit {
+export class DashboardGridComponent {
   @Select() dashboard$!: Observable<DashboardStateModel>;
   @Input()
   options!: GridsterConfig;
   dashboard!: Array<DashboardWidget>;
 
-
-
   constructor(private store: Store) {
+    this.dashboard = store.snapshot().dashboard.currentLayout.widgets.map((item:any) => ({
+      ...item,
+      resizeEvent$: new Subject<boolean>(),
+      dragEvent$: new Subject<boolean>(),
+    }));
   }
-
-  ngOnInit(): void {
-    this.dashboard$.subscribe((dashboard) => {
-      console.log(dashboard);
-      this.dashboard = dashboard.currentLayout.widgets.map((item) => ({
-        ...item,
-        resizeEvent$: new Subject<boolean>(),
-        dragEvent$: new Subject<boolean>(),
-      }));
-    });
-
-  }
-
-
 }
