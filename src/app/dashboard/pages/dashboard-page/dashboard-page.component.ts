@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
-import {DisplayGrid, GridsterConfig, GridType} from "angular-gridster2";
-import {Store} from "@ngxs/store";
-import {MovePane, ResizePane} from "@app/dashboard/+state/dashboard.actions";
-import {DashboardWidget} from "@app/dashboard/+state/dashboard.state";
+import { Component } from "@angular/core";
+import { LayoutService } from "@app/layout.service";
+import { DisplayGrid, GridsterConfig, GridType } from "angular-gridster2";
 
 @Component({
   selector: 'app-dashboard-page',
@@ -12,7 +10,7 @@ import {DashboardWidget} from "@app/dashboard/+state/dashboard.state";
 export class DashboardPageComponent {
   options!: GridsterConfig;
 
-  constructor(private store: Store) {
+  constructor(private layoutService: LayoutService) {
     this.options = {
       gridType: GridType.Fit,
       displayGrid: DisplayGrid.None,
@@ -35,11 +33,11 @@ export class DashboardPageComponent {
       },
       itemChangeCallback: (item, itemComponent) => {
         console.log('itemChangeCallback', item, itemComponent);
-        this.store.dispatch(new MovePane(item as DashboardWidget));
+        this.layoutService.update(item)
       },
       itemResizeCallback: (item, itemComponent) => {
         console.log('itemResizeCallback', item, itemComponent);
-        this.store.dispatch(new ResizePane(item as DashboardWidget));
+        this.layoutService.update(item)
       },
       margin: 2,
       minCols: 8,

@@ -1,12 +1,12 @@
-import {Component, Input} from '@angular/core';
-import {Select, Store} from "@ngxs/store";
-import {AuthState, AuthStateModel} from "@app/auth/+state/auth.state";
-import {Observable} from "rxjs";
-import {Login, Logout} from "@app/auth/+state/auth.actions";
-import {AddChartPane, AddLiquidationPane, AddSignalPane} from "@app/dashboard/+state/dashboard.actions";
-import {GridsterConfig} from "angular-gridster2";
-import {v4 as uuidv4} from "uuid";
-import {DashboardWidget, PaneType} from "@app/dashboard/+state/dashboard.state";
+import { Component, Input } from "@angular/core";
+import { Login, Logout } from "@app/auth/+state/auth.actions";
+import { AuthState, AuthStateModel } from "@app/auth/+state/auth.state";
+import { AddLiquidationPane, AddSignalPane } from "@app/dashboard/+state/dashboard.actions";
+import { DashboardWidget, PaneType } from "@app/dashboard/+state/dashboard.state";
+import { LayoutService } from "@app/layout.service";
+import { Store } from "@ngxs/store";
+import { GridsterConfig } from "angular-gridster2";
+import { v4 as uuidv4 } from "uuid";
 
 @Component({
   selector: 'app-dashboard-header',
@@ -17,7 +17,7 @@ export class DashboardHeaderComponent {
   @Input()
   options!: GridsterConfig;
   auth$ = this.store.select<AuthStateModel>(AuthState);
-  constructor(private store: Store) {}
+  constructor(private store: Store, private layoutService: LayoutService) {}
 
   login() {
     this.store.dispatch(new Login());
@@ -52,8 +52,7 @@ export class DashboardHeaderComponent {
         interval: '1'
       }
     }
-
-    this.store.dispatch(new AddChartPane(widget));
+    this.layoutService.add(widget);
   }
 
   addLiquidationPane() {

@@ -1,10 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {DisplayGrid, GridsterConfig, GridsterItem, GridType} from "angular-gridster2";
-import {AppStateModel, DashboardStateModel, DashboardWidget, PaneType} from "@app/dashboard/+state/dashboard.state";
-import {v4 as uuidv4} from "uuid";
-import {Observable, Subject} from "rxjs";
-import {Select, Store} from "@ngxs/store";
-import {RemovePane} from '@app/dashboard/+state/dashboard.actions';
+import { Component, Input } from "@angular/core";
+import { DashboardStateModel, DashboardWidget } from "@app/dashboard/+state/dashboard.state";
+import { LayoutService } from "@app/layout.service";
+import { Select } from "@ngxs/store";
+import { GridsterConfig } from "angular-gridster2";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-dashboard-grid',
@@ -17,11 +16,14 @@ export class DashboardGridComponent {
   options!: GridsterConfig;
   dashboard!: Array<DashboardWidget>;
 
-  constructor(private store: Store) {
-    this.dashboard = store.snapshot().dashboard.currentLayout.widgets.map((item:any) => ({
-      ...item,
-      resizeEvent$: new Subject<boolean>(),
-      dragEvent$: new Subject<boolean>(),
-    }));
+
+
+  constructor(private layoutService: LayoutService) {
+    layoutService.valueChanges.subscribe((value) => {
+      if(value) this.dashboard = value;
+    });
   }
+
+
+
 }
