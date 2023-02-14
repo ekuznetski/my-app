@@ -1,0 +1,10 @@
+<div class="p-1 h-[calc(100vh-64px)]">
+  <gridster [options]="options">
+    <gridster-item [item]="item" *ngFor="let item of dashboard">
+
+      <app-chart-pane class="h-full" [item]="item"></app-chart-pane>
+
+    </gridster-item>
+  </gridster>
+</div>
+

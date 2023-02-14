@@ -1,0 +1,23 @@
+<div class="flex bg-base-100"
+     [ngClass]="grabClass"
+     (mouseover)="grabClass='cursor-grab'"
+     (mousedown)="grabClass='cursor-grabbing'"
+     (mouseup)="grabClass='cursor-grab'"
+
+>
+  <div class="flex-1 items-center h-[24px]">
+    <div class="h-full text-white text-xs uppercase items-center">
+      Chart pane
+    </div>
+
+  </div>
+  <div class="flex pr-1">
+    <button
+      (mousedown)="removeItem($event, item)"
+      (touchstart)="removeItem($event, item)"
+    >
+      <i class="fa-sharp fa-solid fa-rectangle-xmark text-accent pl-1 cursor-pointer text-xl"></i>
+    </button>
+  </div>
+
+</div>

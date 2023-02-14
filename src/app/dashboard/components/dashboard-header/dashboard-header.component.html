@@ -1,0 +1,51 @@
+<div class="navbar bg-base-200 min-h-6">
+  <div class="flex">
+    <a class="px-1 text-white uppercase logo text-xl">spreadfighter</a>
+  </div>
+  <div class="flex-1 ml-8">
+    <div class="flex-1">
+      <div (click)="addChartPane()" class="tooltip tooltip-bottom z-10" data-tip="Add chart pane">
+        <div class="w-8 btn btn-ghost">
+
+          <i class="fa-light fa-chart-candlestick"></i>
+        </div>
+
+      </div>
+      <div (click)="addLiquidationPane()" class="tooltip tooltip-bottom z-10" data-tip="Add liquidation pane">
+        <div class="w-8 btn btn-ghost">
+
+          <i class="fa-light fa-crosshairs"></i>
+        </div>
+      </div>
+      <div class="tooltip tooltip-bottom z-10" data-tip="Add signal pane">
+        <div (click)="addSignalPane()" class="w-8 btn btn-ghost">
+          <i class="fa-light fa-signal-stream"></i>
+        </div>
+      </div>
+
+    </div>
+    <div class="flex-none">
+      <div class="w-6 btn btn-ghost" *ngIf="!(auth$ | async)?.isLoggedIn">
+        <div
+          (click)="login()"
+          class="w-6 cursor-pointer tooltip-bottom tooltip z-10"
+          data-tip="login"
+        >
+          <i class="fa-light fa-user"></i>
+        </div>
+      </div>
+      <div class="dropdown dropdown-end" *ngIf="(auth$ | async)?.isLoggedIn">
+        <label tabindex="0" class="btn btn-ghost w-6 h-6 min-h-6 mr-4">
+          <div class="w-6">
+            <i class="fa-light fa-key"></i>
+          </div>
+        </label>
+        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-secondary rounded-box w-52">
+          <li><a class="justify-between">Profile</a></li>
+          <li><a>Settings</a></li>
+          <li (click)="logout()"><a>Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<app-pane [item]="item" class="h-full" title="Chart pane">
+  <app-tv-chart-container
+    class="h-full"
+    [containerId]="item.id"
+    [symbol]="item.meta.symbol"
+    [interval]="item.meta.interval"
+  ></app-tv-chart-container>
+  <div class="overlay" *ngIf="item['resizeEvent$'] | async"></div>
+</app-pane>
