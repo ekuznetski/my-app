@@ -17,7 +17,7 @@ import {NgxsStoragePluginModule} from "@ngxs/storage-plugin";
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
-    NgxsModule.forRoot([], {developmentMode: true}),
+    NgxsModule.forRoot([], {developmentMode: false}),
     NgxsStoragePluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     SharedModule,

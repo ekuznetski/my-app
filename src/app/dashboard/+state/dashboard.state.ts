@@ -2,9 +2,11 @@ import {Injectable} from "@angular/core";
 import {Action, State} from "@ngxs/store";
 import {GridsterItem} from "angular-gridster2";
 import {AddChartPane, MovePane, RemovePane, ResizePane} from "@app/dashboard/+state/dashboard.actions";
+import produce from "immer";
 import {v4 as uuidv4} from 'uuid';
 import {AuthState, AuthStateModel} from "@app/auth/+state/auth.state";
 import {ProfileStateModel} from "@app/profile/+state/profile.state";
+import _ from 'lodash';
 export enum PaneType {
   Default,
   Signal,
@@ -106,22 +108,13 @@ export class DashboardState {
   @Action(ResizePane)
   resizePane({getState, patchState}: any, {payload}: ResizePane) {
     const state = getState();
-    patchState({
-      currentLayout: {
-        ...state.currentLayout,
-        widgets: state.currentLayout.widgets.map((widget: { id: string; }) => {
-          if (widget.id === payload.id) {
-            return {
-              ...widget,
-              cols: payload.cols,
-              rows: payload.rows,
-            }
-          }
-          return widget;
-        })
-      }
-    })
-  }
+  produce(draft => {
+    const widgetIdx = draft.currentLayout.widgets.findIndex((widget: { id: string; }) => widget.id === payload.id);
+    if(widgetIdx === -1) return;
+    if(_.isEqual(draft.currentLayout.widgets[widgetIdx], payload)) return;
+    draft.currentLayout.widgets[widgetIdx].cols = payload.cols;
+    draft.currentLayout.widgets[widgetIdx].rows = payload.rows;
+  } )}
 
   @Action(MovePane)
   movePane({getState, patchState}: any, {payload}: ResizePane) {

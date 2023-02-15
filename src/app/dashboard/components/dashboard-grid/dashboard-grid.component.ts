@@ -18,10 +18,9 @@ export class DashboardGridComponent {
   dashboard!: Array<DashboardWidget>;
 
   constructor(private store: Store) {
-    this.dashboard = store.snapshot().dashboard.currentLayout.widgets.map((item:any) => ({
-      ...item,
-      resizeEvent$: new Subject<boolean>(),
-      dragEvent$: new Subject<boolean>(),
-    }));
+    this.dashboard$.subscribe(dashboard => {
+      this.dashboard = dashboard.currentLayout.widgets
+    })
+    // this.dashboard
   }
 }
