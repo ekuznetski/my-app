@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Action, State} from "@ngxs/store";
+import { Action, State, StateContext } from "@ngxs/store";
 import {GridsterItem} from "angular-gridster2";
 import {AddChartPane, MovePane, RemovePane, ResizePane} from "@app/dashboard/+state/dashboard.actions";
 import produce from "immer";
@@ -95,45 +95,37 @@ export class DashboardState {
   }
 
   @Action(RemovePane)
-  removePane({getState, patchState}: any, {payload}: RemovePane) {
+  removePane({getState, patchState}: StateContext<DashboardStateModel>, {payload}: RemovePane) {
     const state = getState();
-    patchState({
-      currentLayout: {
-        ...state.currentLayout,
-        widgets: state.currentLayout.widgets.filter((widget: { id: string; }) => widget.id !== payload.id)
-      }
-    })
+
+    // patchState({
+    //   currentLayout: {
+    //     ...state.currentLayout,
+    //     widgets: state.currentLayout.widgets.filter((widget: { id: string; }) => widget.id !== payload.id)
+    //   }
+    // })
   }
 
   @Action(ResizePane)
-  resizePane({getState, patchState}: any, {payload}: ResizePane) {
-    const state = getState();
-  produce(draft => {
-    const widgetIdx = draft.currentLayout.widgets.findIndex((widget: { id: string; }) => widget.id === payload.id);
-    if(widgetIdx === -1) return;
-    if(_.isEqual(draft.currentLayout.widgets[widgetIdx], payload)) return;
-    draft.currentLayout.widgets[widgetIdx].cols = payload.cols;
-    draft.currentLayout.widgets[widgetIdx].rows = payload.rows;
-  } )}
+  resizePane({setState}: StateContext<DashboardStateModel>, {payload}: ResizePane) {
+    setState(produce(draft => {
+      const widgetIdx = draft.currentLayout.widgets.findIndex((widget: { id: string; }) => widget.id === payload.id);
+      if(widgetIdx === -1) return;
+      if(_.isEqual(draft.currentLayout.widgets[widgetIdx], payload)) return;
+      draft.currentLayout.widgets[widgetIdx].cols = payload.cols;
+      draft.currentLayout.widgets[widgetIdx].rows = payload.rows;
+    } ))
+  }
 
   @Action(MovePane)
-  movePane({getState, patchState}: any, {payload}: ResizePane) {
-    const state = getState();
-    patchState({
-      currentLayout: {
-        ...state.currentLayout,
-        widgets: state.currentLayout.widgets.map((widget: { id: string; }) => {
-          if (widget.id === payload.id) {
-            return {
-              ...widget,
-              x: payload.x,
-              y: payload.y,
-            }
-          }
-          return widget;
-        })
-      }
-    })
+  movePane({setState}: StateContext<DashboardStateModel>, {payload}: ResizePane) {
+    setState(produce(draft => {
+      const widgetIdx = draft.currentLayout.widgets.findIndex((widget: { id: string; }) => widget.id === payload.id);
+      if(widgetIdx === -1) return;
+      if(_.isEqual(draft.currentLayout.widgets[widgetIdx], payload)) return;
+      draft.currentLayout.widgets[widgetIdx].x = payload.x;
+      draft.currentLayout.widgets[widgetIdx].y = payload.y;
+    }))
   }
 
 }
