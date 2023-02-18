@@ -20,6 +20,7 @@
     "@angular/router": "^15.1.0",
     "@ngxs/router-plugin": "^3.7.6",
     "daisyui": "^2.50.0",
+    "lodash": "^4.17.21",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
@@ -32,6 +33,7 @@
     "@ngxs/storage-plugin": "^3.7.6",
     "@ngxs/store": "^3.7.6",
     "@types/jasmine": "~4.3.0",
+    "@types/lodash": "^4.14.191",
     "@types/uuid": "^9.0.0",
     "add": "^2.0.6",
     "angular-gridster2": "^15.0.3",

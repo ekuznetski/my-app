@@ -1,10 +1,11 @@
-import {Injectable} from "@angular/core";
-import {Action, State} from "@ngxs/store";
-import {GridsterItem} from "angular-gridster2";
-import {AddChartPane, MovePane, RemovePane, ResizePane} from "@app/dashboard/+state/dashboard.actions";
-import {v4 as uuidv4} from 'uuid';
-import {AuthState, AuthStateModel} from "@app/auth/+state/auth.state";
-import {ProfileStateModel} from "@app/profile/+state/profile.state";
+import { Injectable } from "@angular/core";
+import { AuthStateModel } from "@app/auth/+state/auth.state";
+import { AddChartPane, MovePane, RemovePane, ResizePane } from "@app/dashboard/+state/dashboard.actions";
+import { ProfileStateModel } from "@app/profile/+state/profile.state";
+import { Action, State } from "@ngxs/store";
+import { GridsterItem } from "angular-gridster2";
+import { v4 as uuidv4 } from "uuid";
+
 export enum PaneType {
   Default,
   Signal,
@@ -87,7 +88,7 @@ export class DashboardState {
     patchState({
       currentLayout: {
         ...state.currentLayout,
-        widgets: [...state.currentLayout.widgets, payload]
+        widgets: [...state?.currentLayout?.widgets??[], payload]
       }
     })
   }
@@ -109,8 +110,8 @@ export class DashboardState {
     patchState({
       currentLayout: {
         ...state.currentLayout,
-        widgets: state.currentLayout.widgets.map((widget: { id: string; }) => {
-          if (widget.id === payload.id) {
+        widgets: state.currentLayout.widgets.map((widget: DashboardWidget) => {
+          if (widget.id === payload.id && payload.cols !== widget.cols && payload.rows !== widget.rows) {
             return {
               ...widget,
               cols: payload.cols,
@@ -129,8 +130,8 @@ export class DashboardState {
     patchState({
       currentLayout: {
         ...state.currentLayout,
-        widgets: state.currentLayout.widgets.map((widget: { id: string; }) => {
-          if (widget.id === payload.id) {
+        widgets: state.currentLayout.widgets.map((widget: DashboardWidget) => {
+          if (widget.id === payload.id && payload.x !== widget.x && payload.y !== widget.y) {
             return {
               ...widget,
               x: payload.x,
