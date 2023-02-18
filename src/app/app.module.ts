@@ -1,14 +1,14 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { RouterModule } from "@angular/router";
+import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
+import { NgxsStoragePluginModule } from "@ngxs/storage-plugin";
+import { NgxsModule } from "@ngxs/store";
 
-import {AppComponent} from './app.component';
-import {AuthModule} from "./auth/auth.module";
-import {NgxsModule} from "@ngxs/store";
-import {NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
-import {RouterModule} from "@angular/router";
-import {routes} from "./app.routes";
-import {SharedModule} from "./shared/shared.module";
-import {NgxsStoragePluginModule} from "@ngxs/storage-plugin";
+import { AppComponent } from "./app.component";
+import { routes } from "./app.routes";
+import { AuthModule } from "./auth/auth.module";
+import { SharedModule } from "./shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -17,7 +17,7 @@ import {NgxsStoragePluginModule} from "@ngxs/storage-plugin";
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
-    NgxsModule.forRoot([], {developmentMode: true}),
+    NgxsModule.forRoot([], {developmentMode: false}),
     NgxsStoragePluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     SharedModule,
