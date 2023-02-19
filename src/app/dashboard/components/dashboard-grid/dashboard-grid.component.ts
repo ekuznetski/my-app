@@ -1,15 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {DisplayGrid, GridsterConfig, GridsterItem, GridType} from "angular-gridster2";
-import {AppStateModel, DashboardStateModel, DashboardWidget, PaneType} from "@app/dashboard/+state/dashboard.state";
-import {v4 as uuidv4} from "uuid";
-import {Observable, Subject} from "rxjs";
-import {Select, Store} from "@ngxs/store";
-import {RemovePane} from '@app/dashboard/+state/dashboard.actions';
+import { Component, Input } from "@angular/core";
+import { DashboardStateModel, DashboardWidget } from "@app/dashboard/+state/dashboard.state";
+import { Select } from "@ngxs/store";
+import { GridsterConfig } from "angular-gridster2";
+import { Observable, Subject } from "rxjs";
 
 @Component({
   selector: 'app-dashboard-grid',
   templateUrl: './dashboard-grid.component.html',
-  styleUrls: ['./dashboard-grid.component.css']
+  styleUrls: ['./dashboard-grid.component.css'],
 })
 export class DashboardGridComponent {
   @Select() dashboard$!: Observable<DashboardStateModel>;
@@ -17,11 +15,15 @@ export class DashboardGridComponent {
   options!: GridsterConfig;
   dashboard!: Array<DashboardWidget>;
 
-  constructor(private store: Store) {
-    this.dashboard = store.snapshot().dashboard.currentLayout.widgets.map((item:any) => ({
-      ...item,
-      resizeEvent$: new Subject<boolean>(),
-      dragEvent$: new Subject<boolean>(),
-    }));
+
+  constructor() {
+    this.dashboard$.subscribe((value) => {
+      value.currentLayout.widgets.forEach((widget) => {
+        widget["resizeEvent$"] = new Subject<boolean>();
+        widget["dragEvent$"] = new Subject<boolean>();
+        return widget;
+      });
+      this.dashboard = value.currentLayout.widgets;
+    });
   }
 }
