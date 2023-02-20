@@ -1,17 +1,23 @@
-import {Component, Input} from '@angular/core';
-import {Select, Store} from "@ngxs/store";
-import {AuthState, AuthStateModel} from "@app/auth/+state/auth.state";
-import {Observable} from "rxjs";
-import {Login, Logout} from "@app/auth/+state/auth.actions";
-import {AddChartPane, AddLiquidationPane, AddSignalPane} from "@app/dashboard/+state/dashboard.actions";
-import {GridsterConfig} from "angular-gridster2";
-import {v4 as uuidv4} from "uuid";
-import {DashboardWidget, PaneType} from "@app/dashboard/+state/dashboard.state";
+import { Component, Input } from '@angular/core';
+import { Login, Logout } from '@app/auth/+state/auth.actions';
+import { AuthState, AuthStateModel } from '@app/auth/+state/auth.state';
+import {
+  AddChartPane,
+  AddLiquidationPane,
+  AddSignalPane,
+} from '@app/dashboard/+state/dashboard.actions';
+import {
+  DashboardWidget,
+  PaneType,
+} from '@app/dashboard/+state/dashboard.state';
+import { Store } from '@ngxs/store';
+import { GridsterConfig } from 'angular-gridster2';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-dashboard-header',
   templateUrl: './dashboard-header.component.html',
-  styleUrls: ['./dashboard-header.component.css']
+  styleUrls: ['./dashboard-header.component.css'],
 })
 export class DashboardHeaderComponent {
   @Input()
@@ -49,9 +55,9 @@ export class DashboardHeaderComponent {
       type: PaneType.Chart,
       meta: {
         symbol: 'BTCUSDT',
-        interval: '1'
-      }
-    }
+        interval: '1',
+      },
+    };
 
     this.store.dispatch(new AddChartPane(widget));
   }
@@ -59,8 +65,4 @@ export class DashboardHeaderComponent {
   addLiquidationPane() {
     this.store.dispatch(new AddLiquidationPane());
   }
-
-
-
-
 }

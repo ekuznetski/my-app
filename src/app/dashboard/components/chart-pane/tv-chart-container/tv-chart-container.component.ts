@@ -1,33 +1,39 @@
-import {AfterViewInit, Component, Input, OnDestroy} from '@angular/core';
-import {v4 as uuidv4} from 'uuid';
+import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
+import { BinanceDatafeed } from '@app/utils/binance-datafeed';
 import {
   ChartingLibraryWidgetOptions,
   IChartingLibraryWidget,
   LanguageCode,
   ResolutionString,
-  widget
-} from "@assets/charting_library";
-import {Subscription} from "rxjs";
-import {BinanceDatafeed} from "@app/utils/binance-datafeed";
+  widget,
+} from '@assets/charting_library';
+import { Subscription } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-tv-chart-container',
   templateUrl: './tv-chart-container.component.html',
-  styleUrls: ['./tv-chart-container.component.css']
+  styleUrls: ['./tv-chart-container.component.css'],
 })
 export class TvChartContainerComponent implements OnDestroy, AfterViewInit {
   private _symbol: ChartingLibraryWidgetOptions['symbol'] = 'BTCUSDT';
-  private _interval: ChartingLibraryWidgetOptions['interval'] = '1' as ResolutionString;
+  private _interval: ChartingLibraryWidgetOptions['interval'] =
+    '1' as ResolutionString;
   // BEWARE: no trailing slash is expected in feed URL
   private _datafeedUrl = 'https://demo_feed.tradingview.com';
-  private _libraryPath: ChartingLibraryWidgetOptions['library_path'] = '/assets/charting_library/';
-  private _chartsStorageUrl: ChartingLibraryWidgetOptions['charts_storage_url'] = 'https://save.ione.dev';
-  private _chartsStorageApiVersion: ChartingLibraryWidgetOptions['charts_storage_api_version'] = '1.1';
-  private _clientId: ChartingLibraryWidgetOptions['client_id'] = 'dev.spreadcharts.com';
+  private _libraryPath: ChartingLibraryWidgetOptions['library_path'] =
+    '/assets/charting_library/';
+  private _chartsStorageUrl: ChartingLibraryWidgetOptions['charts_storage_url'] =
+    'https://save.ione.dev';
+  private _chartsStorageApiVersion: ChartingLibraryWidgetOptions['charts_storage_api_version'] =
+    '1.1';
+  private _clientId: ChartingLibraryWidgetOptions['client_id'] =
+    'dev.spreadcharts.com';
   private _userId: ChartingLibraryWidgetOptions['user_id'] = 'public_user_id';
   private _fullscreen: ChartingLibraryWidgetOptions['fullscreen'] = false;
   private _autosize: ChartingLibraryWidgetOptions['autosize'] = true;
-  private _containerId: ChartingLibraryWidgetOptions['container'] = 'tv_chart_container';
+  private _containerId: ChartingLibraryWidgetOptions['container'] =
+    'tv_chart_container';
   private _tvWidget: IChartingLibraryWidget | null = null;
 
   @Input()
@@ -51,13 +57,18 @@ export class TvChartContainerComponent implements OnDestroy, AfterViewInit {
   }
 
   @Input()
-  set chartsStorageUrl(chartsStorageUrl: ChartingLibraryWidgetOptions['charts_storage_url']) {
+  set chartsStorageUrl(
+    chartsStorageUrl: ChartingLibraryWidgetOptions['charts_storage_url']
+  ) {
     this._chartsStorageUrl = chartsStorageUrl || this._chartsStorageUrl;
   }
 
   @Input()
-  set chartsStorageApiVersion(chartsStorageApiVersion: ChartingLibraryWidgetOptions['charts_storage_api_version']) {
-    this._chartsStorageApiVersion = chartsStorageApiVersion || this._chartsStorageApiVersion;
+  set chartsStorageApiVersion(
+    chartsStorageApiVersion: ChartingLibraryWidgetOptions['charts_storage_api_version']
+  ) {
+    this._chartsStorageApiVersion =
+      chartsStorageApiVersion || this._chartsStorageApiVersion;
   }
 
   @Input()
@@ -86,7 +97,7 @@ export class TvChartContainerComponent implements OnDestroy, AfterViewInit {
   }
 
   cuuid: string;
-  theme: Subscription = new Subscription;
+  theme: Subscription = new Subscription();
 
   constructor() {
     this.cuuid = uuidv4();
@@ -97,7 +108,9 @@ export class TvChartContainerComponent implements OnDestroy, AfterViewInit {
       const regex = new RegExp('[?&]lang=([^&#]*)');
       const results = regex.exec(location.search);
 
-      return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' ')) as LanguageCode;
+      return results === null
+        ? null
+        : (decodeURIComponent(results[1].replace(/\+/g, ' ')) as LanguageCode);
     }
 
     const widgetOptions: ChartingLibraryWidgetOptions = {
@@ -108,13 +121,18 @@ export class TvChartContainerComponent implements OnDestroy, AfterViewInit {
       library_path: this._libraryPath,
       locale: getLanguageFromURL() || 'en',
       disabled_features: ['popup_hints', 'header_saveload'],
-      enabled_features: ['study_templates', 'hide_left_toolbar_by_default', 'show_spread_operators', 'study_overlay_compare_legend_option'],
+      enabled_features: [
+        'study_templates',
+        'hide_left_toolbar_by_default',
+        'show_spread_operators',
+        'study_overlay_compare_legend_option',
+      ],
       charts_storage_url: this._chartsStorageUrl,
       charts_storage_api_version: this._chartsStorageApiVersion,
       client_id: this._clientId,
       theme: 'Dark',
       overrides: {
-        "paneProperties.background": "#141414",
+        'paneProperties.background': '#141414',
       },
       user_id: this._userId,
       fullscreen: this._fullscreen,
@@ -123,8 +141,6 @@ export class TvChartContainerComponent implements OnDestroy, AfterViewInit {
     };
 
     this._tvWidget = new widget(widgetOptions);
-
-
   }
 
   ngOnDestroy() {
@@ -133,6 +149,5 @@ export class TvChartContainerComponent implements OnDestroy, AfterViewInit {
       this._tvWidget = null;
     }
     this.theme.unsubscribe();
-
   }
 }

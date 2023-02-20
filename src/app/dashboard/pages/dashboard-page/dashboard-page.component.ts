@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import {DisplayGrid, GridsterConfig, GridType} from "angular-gridster2";
-import {Store} from "@ngxs/store";
-import {MovePane, ResizePane} from "@app/dashboard/+state/dashboard.actions";
-import {DashboardWidget} from "@app/dashboard/+state/dashboard.state";
+import { MovePane, ResizePane } from '@app/dashboard/+state/dashboard.actions';
+import { DashboardWidget } from '@app/dashboard/+state/dashboard.state';
+import { Store } from '@ngxs/store';
+import { DisplayGrid, GridsterConfig, GridType } from 'angular-gridster2';
 
 @Component({
   selector: 'app-dashboard-page',
   templateUrl: './dashboard-page.component.html',
-  styleUrls: ['./dashboard-page.component.css']
+  styleUrls: ['./dashboard-page.component.css'],
 })
 export class DashboardPageComponent {
   options!: GridsterConfig;
@@ -30,7 +30,7 @@ export class DashboardPageComponent {
           se: true,
           ne: false,
           sw: true,
-          nw: false
+          nw: false,
         },
       },
       itemChangeCallback: (item, itemComponent) => {
@@ -43,7 +43,7 @@ export class DashboardPageComponent {
       },
       margin: 2,
       minCols: 8,
-      minRows: 8
+      minRows: 8,
     };
   }
 }

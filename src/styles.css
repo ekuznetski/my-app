@@ -4,14 +4,14 @@
 @tailwind utilities;
 
 .logo {
-    font-family: 'Bebas Neue', cursive;
+  font-family: "Bebas Neue", cursive;
 }
 
-html, body {
-    height: 100vh;
+html,
+body {
+  height: 100vh;
 }
 
 gridster {
   @apply bg-primary/10 !important;
 }
-
